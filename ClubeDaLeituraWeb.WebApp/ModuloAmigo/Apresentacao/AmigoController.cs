@@ -62,4 +62,39 @@ public class AmigoController : Controller
 
         return RedirectToAction(nameof(Listar));
     }
+
+    [HttpGet]
+    public ActionResult Editar(string id)
+    {
+        Amigo? amigo = repositorioAmigo.SelecionarPorId(id);
+
+        if (amigo == null)
+            return RedirectToAction(nameof(Listar));
+
+        EditarAmigoViewModel editarVm = new EditarAmigoViewModel(
+            id,
+            amigo.Nome,
+            amigo.NomeResponsavel,
+            amigo.Telefone
+        );
+
+        return View(editarVm);
+    }
+
+    [HttpPost]
+    public ActionResult Editar(EditarAmigoViewModel editarVm)
+    {
+        if (!ModelState.IsValid)
+            return View(editarVm);
+
+        Amigo amigoAtualizado = new Amigo(
+            editarVm.Nome,
+            editarVm.NomeResponsavel,
+            editarVm.Telefone
+        );
+
+        repositorioAmigo.Editar(editarVm.Id, amigoAtualizado);
+
+        return RedirectToAction(nameof(Listar));
+    }
 }
