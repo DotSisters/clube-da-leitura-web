@@ -97,4 +97,30 @@ public class AmigoController : Controller
 
         return RedirectToAction(nameof(Listar));
     }
+
+    [HttpGet]
+    public ActionResult Excluir(string id)
+    {
+        Amigo? amigo = repositorioAmigo.SelecionarPorId(id);
+
+        if (amigo == null)
+            return RedirectToAction(nameof(Listar));
+
+        ExcluirAmigoViewModel excluirVm = new ExcluirAmigoViewModel(
+            id,
+            amigo.Nome,
+            amigo.NomeResponsavel,
+            amigo.Telefone
+        );
+
+        return View(excluirVm);
+    }
+
+    [HttpPost]
+    public ActionResult Excluir(ExcluirAmigoViewModel excluirVm)
+    {
+        repositorioAmigo.Excluir(excluirVm.Id);
+
+        return RedirectToAction(nameof(Listar));
+    }
 }

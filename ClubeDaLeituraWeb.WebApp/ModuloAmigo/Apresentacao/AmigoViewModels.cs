@@ -39,4 +39,9 @@ public record EditarAmigoViewModel(
     string Telefone
 );
 
-public record ExcluirAmigoViewModel();
+public record ExcluirAmigoViewModel(
+    string Id,
+    string Nome,
+    string NomeResponsavel,
+    string Telefone
+);
