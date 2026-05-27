@@ -1,6 +1,46 @@
+@using ClubeDaLeituraWeb.WebApp.ModuloCaixa.Dominio
 @{
     Layout = "_Layout";
     ViewBag.Titulo = "Edição de Revista";
 }
 
 @model EditarRevistaViewModel;
+
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Editar" asp-route-id="@Model.Id" method="post">
+
+  <div class="mb-3">
+        <label asp-for="Titulo" class="form-label fw-semibold text-primary text-uppercase small">Titulo</label>
+        <input asp-for="Titulo" type="text" class="form-control">
+        <span asp-validation-for="Titulo" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NumeroEdicao" class="form-label fw-semibold text-primary text-uppercase small">Número da Edição</label>
+        <input asp-for="NumeroEdicao" type="text" class="form-control">
+        <span asp-validation-for="NumeroEdicao" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AnoPublicacao" class="form-label fw-semibold text-primary text-uppercase small">Ano de Publicação</label>
+        <input asp-for="AnoPublicacao" type="number" min="1" max="@DateTime.Now.Year" class="form-control">
+        <span asp-validation-for="AnoPublicacao" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CaixaId" class="form-label fw-semibold text-primary text-uppercase small">Caixa</label>
+
+        <select asp-for="CaixaId" class="form-select">
+            <option value="">Selecione uma caixa</option>
+            @foreach (Caixa caixa in ViewBag.Caixas)
+            {
+                <option value="@caixa.Id">@caixa.Etiqueta</option>
+            }
+        </select>
+        <span asp-validation-for="CaixaId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
+    </div>
+</form>
