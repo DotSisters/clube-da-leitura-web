@@ -49,6 +49,34 @@ public class AmigoController : Controller
     [HttpPost]
     public ActionResult Cadastrar(CadastrarAmigoViewModel cadastrarVm)
     {
+        List<Amigo> registros = repositorioAmigo.SelecionarTodos();
+
+        bool nomeDuplicado = registros.Any(a =>
+            a.Nome.Equals(cadastrarVm.Nome, StringComparison.OrdinalIgnoreCase)
+        );
+
+        bool telefoneDuplicado = registros.Any(a =>
+           a.Telefone.Equals(cadastrarVm.Telefone, StringComparison.OrdinalIgnoreCase)
+        );
+
+        if (nomeDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(cadastrarVm.Nome),
+                "Já existe um amigo com este nome."
+            );
+
+        }
+
+        if (telefoneDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(cadastrarVm.Telefone),
+                "Já existe um amigo com este telefone."
+            );
+
+        }
+
         if (!ModelState.IsValid)
             return View(cadastrarVm);
 
