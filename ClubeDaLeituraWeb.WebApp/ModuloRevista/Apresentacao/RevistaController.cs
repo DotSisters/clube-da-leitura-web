@@ -57,58 +57,58 @@ public class RevistaController : Controller
     [HttpPost]
     public ActionResult Cadastrar(CadastrarRevistaViewModel cadastrarVm)
     {
-Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(cadastrarVm.CaixaId);
+        Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(cadastrarVm.CaixaId);
 
-    if (caixaSelecionada == null)
-    {
-        ModelState.AddModelError(
-            nameof(cadastrarVm.CaixaId),
-            "A caixa selecionada é inválida."
+        if (caixaSelecionada == null)
+        {
+            ModelState.AddModelError(
+                nameof(cadastrarVm.CaixaId),
+                "A caixa selecionada é inválida."
+            );
+        }
+
+        List<Revista> registros = repositorioRevista.SelecionarTodos();
+
+        bool tituloDuplicado = registros.Any(r =>
+            r.Titulo.Equals(cadastrarVm.Titulo, StringComparison.OrdinalIgnoreCase)
         );
-    }
 
-    List<Revista> registros = repositorioRevista.SelecionarTodos();
-
-    bool tituloDuplicado = registros.Any(r =>
-        r.Titulo.Equals(cadastrarVm.Titulo, StringComparison.OrdinalIgnoreCase)
-    );
-
-    bool edicaoDuplicada = registros.Any(r =>
-        r.NumeroEdicao == cadastrarVm.NumeroEdicao
-    );
-
-    if (tituloDuplicado)
-    {
-        ModelState.AddModelError(
-            nameof(cadastrarVm.Titulo),
-            "Já existe uma revista com este título."
+        bool edicaoDuplicada = registros.Any(r =>
+            r.NumeroEdicao == cadastrarVm.NumeroEdicao
         );
-    }
 
-    if (edicaoDuplicada)
-    {
-        ModelState.AddModelError(
-            nameof(cadastrarVm.NumeroEdicao),
-            "Já existe uma revista com este número de edição."
+        if (tituloDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(cadastrarVm.Titulo),
+                "Já existe uma revista com este título."
+            );
+        }
+
+        if (edicaoDuplicada)
+        {
+            ModelState.AddModelError(
+                nameof(cadastrarVm.NumeroEdicao),
+                "Já existe uma revista com este número de edição."
+            );
+        }
+
+        if (!ModelState.IsValid)
+        {
+            CarregarCaixas();
+            return View(cadastrarVm);
+        }
+
+        Revista novaRevista = new Revista(
+            cadastrarVm.Titulo,
+            cadastrarVm.NumeroEdicao,
+            cadastrarVm.AnoPublicacao,
+            caixaSelecionada!
         );
-    }
 
-    if (!ModelState.IsValid)
-    {
-        CarregarCaixas();
-        return View(cadastrarVm);
-    }
+        repositorioRevista.Cadastrar(novaRevista);
 
-    Revista novaRevista = new Revista(
-        cadastrarVm.Titulo,
-        cadastrarVm.NumeroEdicao,
-        cadastrarVm.AnoPublicacao,
-        caixaSelecionada!
-    );
-
-    repositorioRevista.Cadastrar(novaRevista);
-
-    return RedirectToAction(nameof(Listar));
+        return RedirectToAction(nameof(Listar));
     }
 
     [HttpGet]
@@ -163,7 +163,6 @@ Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(cadastrarVm.CaixaId);
 
         return RedirectToAction(nameof(Listar));
     }
-
 
     [HttpGet]
     public ActionResult Excluir(string id)
