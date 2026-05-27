@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ClubeDaLeituraWeb.WebApp.ModuloRevista.Dominio;
-
 namespace ClubeDaLeituraWeb.WebApp.ModuloRevista.Apresentacao;
 
 public record ListarRevistasViewModel(
@@ -44,4 +42,10 @@ public record EditarRevistaViewModel(
     string CaixaId
 );
 
-public record ExcluirRevistaViewModel();
+public record ExcluirRevistaViewModel(
+    string Id,
+    string Titulo,
+    int NumeroEdicao,
+    int AnoPublicacao,
+    string Caixa
+);
