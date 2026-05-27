@@ -86,6 +86,59 @@ public class RevistaController : Controller
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public ActionResult Editar(string id)
+    {
+        Revista? revista = repositorioRevista.SelecionarPorId(id);
+
+        if (revista == null)
+            return RedirectToAction(nameof(Listar));
+
+        CarregarCaixas();
+
+        EditarRevistaViewModel editarVm = new EditarRevistaViewModel(
+            revista.Id,
+            revista.Titulo,
+            revista.NumeroEdicao,
+            revista.AnoPublicacao,
+            revista.Caixa.Id
+        );
+
+        return View(editarVm);
+    }
+
+    [HttpPost]
+    public ActionResult Editar(EditarRevistaViewModel editarVm)
+    {
+        Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(editarVm.CaixaId);
+
+        if (caixaSelecionada == null)
+        {
+            ModelState.AddModelError(
+                nameof(editarVm.CaixaId),
+                "A caixa selecionada é inválida."
+            );
+        }
+
+        if (!ModelState.IsValid)
+        {
+            CarregarCaixas();
+
+            return View(editarVm);
+        }
+
+        Revista revistaAtualizada = new Revista(
+            editarVm.Titulo,
+            editarVm.NumeroEdicao,
+            editarVm.AnoPublicacao,
+            caixaSelecionada!
+        );
+
+        repositorioRevista.Editar(editarVm.Id, revistaAtualizada);
+
+        return RedirectToAction(nameof(Listar));
+    }
+
     private void CarregarCaixas()
     {
         List<Caixa> caixas = repositorioCaixa.SelecionarTodos();
