@@ -1,14 +1,19 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ClubeDaLeituraWeb.WebApp.ModuloAmigo.Dominio;
 using ClubeDaLeituraWeb.WebApp.ModuloCaixa.Dominio;
+using ClubeDaLeituraWeb.WebApp.ModuloEmprestimo.Dominio;
+using ClubeDaLeituraWeb.WebApp.ModuloRevista.Dominio;
 
 namespace ClubeDaLeituraWeb.WebApp.Compartilhado.Infra.Arquivos;
 
 public sealed class ContextoJson
 {
-    public List<Caixa> Caixas { get; set; } = new List<Caixa>();
-
-    private readonly string caminhoArquivo;
+    public List<Caixa> Caixas { get; set; } = new();
+    public List<Amigo> Amigos { get; set; } = new();
+    public List<Revista> Revistas { get; set; } = new();
+    public List<Emprestimo> Emprestimos { get; set; } = new();
+    private readonly string _caminhoArquivo;
 
     public ContextoJson()
     {
@@ -19,27 +24,29 @@ public sealed class ContextoJson
 
         Directory.CreateDirectory(caminhoDiretorio);
 
-        caminhoArquivo = Path.Combine(caminhoDiretorio, "dados.json");
+        _caminhoArquivo = Path.Combine(caminhoDiretorio, "dados.json");
     }
 
     public void Salvar()
     {
-        JsonSerializerOptions opcoesJson = new JsonSerializerOptions();
-        opcoesJson.WriteIndented = true;
-        opcoesJson.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        opcoesJson.ReferenceHandler = ReferenceHandler.Preserve;
+        JsonSerializerOptions opcoesJson = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         string jsonString = JsonSerializer.Serialize(this, opcoesJson);
 
-        File.WriteAllText(caminhoArquivo, jsonString);
+        File.WriteAllText(_caminhoArquivo, jsonString);
     }
 
     public void Carregar()
     {
-        if (!File.Exists(caminhoArquivo))
+        if (!File.Exists(_caminhoArquivo))
             return;
 
-        string jsonString = File.ReadAllText(caminhoArquivo);
+        string jsonString = File.ReadAllText(_caminhoArquivo);
 
         JsonSerializerOptions opcoesJson = new JsonSerializerOptions();
         opcoesJson.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -52,5 +59,10 @@ public sealed class ContextoJson
             return;
 
         Caixas = contextoSalvo.Caixas;
+
+        Amigos = contextoSalvo.Amigos;
+
+        Revistas = contextoSalvo.Revistas;
+        Emprestimos = contextoSalvo.Emprestimos;
     }
 }
