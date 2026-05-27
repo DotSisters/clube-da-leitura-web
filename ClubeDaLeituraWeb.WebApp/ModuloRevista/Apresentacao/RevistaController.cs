@@ -57,33 +57,58 @@ public class RevistaController : Controller
     [HttpPost]
     public ActionResult Cadastrar(CadastrarRevistaViewModel cadastrarVm)
     {
-        Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(cadastrarVm.CaixaId);
+Caixa? caixaSelecionada = repositorioCaixa.SelecionarPorId(cadastrarVm.CaixaId);
 
-        if (caixaSelecionada == null)
-        {
-            ModelState.AddModelError(
-                nameof(cadastrarVm.CaixaId),
-                "A caixa selecionada é inválida."
-            );
-        }
-
-        if (!ModelState.IsValid)
-        {
-            CarregarCaixas();
-
-            return View(cadastrarVm);
-        }
-
-        Revista novaRevista = new Revista(
-            cadastrarVm.Titulo,
-            cadastrarVm.NumeroEdicao,
-            cadastrarVm.AnoPublicacao,
-            caixaSelecionada!
+    if (caixaSelecionada == null)
+    {
+        ModelState.AddModelError(
+            nameof(cadastrarVm.CaixaId),
+            "A caixa selecionada é inválida."
         );
+    }
 
-        repositorioRevista.Cadastrar(novaRevista);
+    List<Revista> registros = repositorioRevista.SelecionarTodos();
 
-        return RedirectToAction(nameof(Listar));
+    bool tituloDuplicado = registros.Any(r =>
+        r.Titulo.Equals(cadastrarVm.Titulo, StringComparison.OrdinalIgnoreCase)
+    );
+
+    bool edicaoDuplicada = registros.Any(r =>
+        r.NumeroEdicao == cadastrarVm.NumeroEdicao
+    );
+
+    if (tituloDuplicado)
+    {
+        ModelState.AddModelError(
+            nameof(cadastrarVm.Titulo),
+            "Já existe uma revista com este título."
+        );
+    }
+
+    if (edicaoDuplicada)
+    {
+        ModelState.AddModelError(
+            nameof(cadastrarVm.NumeroEdicao),
+            "Já existe uma revista com este número de edição."
+        );
+    }
+
+    if (!ModelState.IsValid)
+    {
+        CarregarCaixas();
+        return View(cadastrarVm);
+    }
+
+    Revista novaRevista = new Revista(
+        cadastrarVm.Titulo,
+        cadastrarVm.NumeroEdicao,
+        cadastrarVm.AnoPublicacao,
+        caixaSelecionada!
+    );
+
+    repositorioRevista.Cadastrar(novaRevista);
+
+    return RedirectToAction(nameof(Listar));
     }
 
     [HttpGet]
