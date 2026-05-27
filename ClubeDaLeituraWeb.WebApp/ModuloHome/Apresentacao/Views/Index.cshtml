@@ -1,6 +1,6 @@
 @{
-    Layout = "_Layout";
-    ViewBag.Titulo = "Página Inicial";
+Layout = "_Layout";
+ViewBag.Titulo = "Página Inicial";
 }
 
 <div class="row">
@@ -19,8 +19,14 @@
                 <h3 class="h5 text-primary mb-3">Módulos disponíveis</h3>
 
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" asp-controller="Caixa" asp-action="Listar">
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                        asp-controller="Caixa" asp-action="Listar">
                         Controle de Caixas
+                        <span class="badge text-bg-primary rounded-pill">Abrir</span>
+                    </a>
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                        asp-controller="Amigo" asp-action="Listar">
+                        Controle de Amigos
                         <span class="badge text-bg-primary rounded-pill">Abrir</span>
                     </a>
                 </div>
