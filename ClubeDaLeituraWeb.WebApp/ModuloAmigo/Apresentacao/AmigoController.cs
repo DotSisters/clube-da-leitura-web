@@ -65,7 +65,6 @@ public class AmigoController : Controller
                 nameof(cadastrarVm.Nome),
                 "Já existe um amigo com este nome."
             );
-
         }
 
         if (telefoneDuplicado)
@@ -112,6 +111,33 @@ public class AmigoController : Controller
     [HttpPost]
     public ActionResult Editar(EditarAmigoViewModel editarVm)
     {
+        List<Amigo> registros = repositorioAmigo.SelecionarTodos();
+
+        bool nomeDuplicado = registros.Any(a =>
+            a.Id != editarVm.Id && a.Nome.Equals(editarVm.Nome, StringComparison.OrdinalIgnoreCase)
+        );
+
+        bool telefoneDuplicado = registros.Any(a =>
+           a.Id != editarVm.Id && a.Telefone.Equals(editarVm.Telefone, StringComparison.OrdinalIgnoreCase)
+        );
+
+        if (nomeDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(editarVm.Nome),
+                "Já existe um amigo com este nome."
+            );
+        }
+
+        if (telefoneDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(editarVm.Telefone),
+                "Já existe um amigo com este telefone."
+            );
+
+        }
+
         if (!ModelState.IsValid)
             return View(editarVm);
 
