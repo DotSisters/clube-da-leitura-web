@@ -75,13 +75,14 @@ O sistema foi desenvolvido em *.NET 10.0 SDK*, com foco em simplicidade e efici�
 1. Clone o repositório ou baixe o código fonte.
 2. Abra o terminal e navegue até a pasta raiz.
 3. Restaure as dependências:
-   bash
+
+   ```bash
    dotnet restore
+   ```
 
 4. Para executar o projeto compilando em tempo real
 
-    ```
-    bash
+    ```bash
     dotnet run --project ClubeDaLeituraWeb.WebApp
     ```
 
