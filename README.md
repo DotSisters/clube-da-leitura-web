@@ -80,6 +80,7 @@ O sistema foi desenvolvido em *.NET 10.0 SDK*, com foco em simplicidade e efici√
 
 4. Para executar o projeto compilando em tempo real
 
+    ```
     bash
     dotnet run --project ClubeDaLeituraWeb.WebApp
     ```
