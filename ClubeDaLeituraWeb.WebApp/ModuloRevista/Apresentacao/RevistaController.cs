@@ -145,6 +145,32 @@ public class RevistaController : Controller
             );
         }
 
+        List<Revista> registros = repositorioRevista.SelecionarTodos();
+
+        bool tituloDuplicado = registros.Any(r =>
+            r.Id != editarVm.Id && r.Titulo.Equals(editarVm.Titulo, StringComparison.OrdinalIgnoreCase)
+        );
+
+        bool edicaoDuplicada = registros.Any(r =>
+             r.Id != editarVm.Id && r.NumeroEdicao == editarVm.NumeroEdicao
+        );
+
+        if (tituloDuplicado)
+        {
+            ModelState.AddModelError(
+                nameof(editarVm.Titulo),
+                "Já existe uma revista com este título."
+            );
+        }
+
+        if (edicaoDuplicada)
+        {
+            ModelState.AddModelError(
+                nameof(editarVm.NumeroEdicao),
+                "Já existe uma revista com este número de edição."
+            );
+        }
+
         if (!ModelState.IsValid)
         {
             CarregarCaixas();
