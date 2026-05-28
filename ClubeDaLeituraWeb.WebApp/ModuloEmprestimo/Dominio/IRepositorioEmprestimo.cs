@@ -2,4 +2,4 @@ using ClubeDaLeituraWeb.WebApp.Compartilhado.Dominio;
 
 namespace ClubeDaLeituraWeb.WebApp.ModuloEmprestimo.Dominio;
 
-public interface IRepositorioEmprestimo;
+public interface IRepositorioEmprestimo : IRepositorio<Emprestimo>;

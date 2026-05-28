@@ -1,9 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+using ClubeDaLeituraWeb.WebApp.ModuloAmigo.Dominio;
+
 namespace ClubeDaLeituraWeb.WebApp.ModuloEmprestimo.Apresentacao;
 
-public record ListarEmprestimosViewModel();
+public record ListarEmprestimosViewModel(
+    string Id,
+    string Amigo,
+    string Revista,
+    DateTime Abertura,
+    DateTime ConclusaoPrevista,
+    string Status,
+    bool EstaAtrasado
+);
 
-public record CadastrarEmprestimoViewModel();
+public record CadastrarEmprestimoViewModel(
+    [Required(ErrorMessage = "O campo \"Amigo\" deve ser preenchido.")]
+    String AmigoId,
 
-public record EditarEmprestimoViewModel();
+    [Required(ErrorMessage = "O campo \"Revista\" deve ser preenchido.")]
+    string RevistaId
 
-public record ExcluirEmprestimoViewModel();
+);

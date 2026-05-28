@@ -1,6 +1,44 @@
+@using ClubeDaLeituraWeb.WebApp.ModuloAmigo.Dominio
+@using ClubeDaLeituraWeb.WebApp.ModuloRevista.Dominio
+
 @{
-    Layout = "_Layout";
-    ViewBag.Titulo = "Cadastro de Emprestimo";
+Layout = "_Layout";
+ViewBag.Titulo = "Cadastro de Emprestimo";
 }
 
 @model CadastrarEmprestimoViewModel;
+
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Cadastrar"
+    method="post">
+
+    <div class="mb-3">
+        <label asp-for="AmigoId" class="form-label fw-semibold text-primary text-uppercase small">Amigo</label>
+
+        <select asp-for="AmigoId" class="form-select">
+            <option value="">Selecione um amigo</option>
+            @foreach (Amigo amigo in ViewBag.Amigos)
+            {
+            <option value="@amigo.Id">@amigo.Nome</option>
+            }
+        </select>
+        <span asp-validation-for="AmigoId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RevistaId" class="form-label fw-semibold text-primary text-uppercase small">Revista</label>
+
+        <select asp-for="RevistaId" class="form-select">
+            <option value="">Selecione uma revista</option>
+            @foreach (Revista revista in ViewBag.Revistas)
+            {
+            <option value="@revista.Id">@revista.Titulo</option>
+            }
+        </select>
+        <span asp-validation-for="RevistaId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
+    </div>
+</form>
