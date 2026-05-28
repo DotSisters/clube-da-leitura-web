@@ -32,20 +32,28 @@ ViewBag.Titulo = "Listagem de Emprestimos";
             <tbody>
                 @foreach (ListarEmprestimosViewModel e in Model)
                 {
-                <tr>
+                <tr class="@(e.EstaAtrasado ? "table-danger" : "")">
                     <td>@e.Id</td>
                     <td>@e.Amigo</td>
                     <td>@e.Revista</td>
                     <td>@e.Status</td>
-                    <td>@e.Abertura</td>
-                    <td>@e.ConclusaoPrevista</td>
+                    <td>@e.Abertura.ToString("dd/MM/yyyy")</td>
+                    <td>@e.ConclusaoPrevista.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <div class="d-flex gap-2">
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Editar"
-                                asp-route-id="@e.Id">Editar</a>
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Excluir"
-                                asp-route-id="@e.Id">Excluir</a>
-                        </div>
+                        @if (e.Status != "Concluido")
+                        {
+                            <a class="btn btn-outline-success btn-sm rounded-pill px-3"
+                               asp-action="Devolver"
+                               asp-route-id="@e.Id">
+                                Devolver
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" disabled>
+                                Devolvido
+                            </button>
+                        }
                     </td>
                 </tr>
                 }

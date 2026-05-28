@@ -1,4 +1,5 @@
 using ClubeDaLeituraWeb.WebApp.ModuloAmigo.Dominio;
+using ClubeDaLeituraWeb.WebApp.ModuloEmprestimo.Dominio;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubeDaLeituraWeb.WebApp.ModuloAmigo.Apresentacao;
@@ -6,10 +7,12 @@ namespace ClubeDaLeituraWeb.WebApp.ModuloAmigo.Apresentacao;
 public class AmigoController : Controller
 {
     private readonly IRepositorioAmigo repositorioAmigo;
+    private readonly IRepositorioEmprestimo repositorioEmprestimo;
 
-    public AmigoController(IRepositorioAmigo repositorioAmigo)
+    public AmigoController(IRepositorioAmigo repositorioAmigo, IRepositorioEmprestimo repositorioEmprestimo)
     {
         this.repositorioAmigo = repositorioAmigo;
+        this.repositorioEmprestimo = repositorioEmprestimo;
     }
 
     [HttpGet]
@@ -173,6 +176,17 @@ public class AmigoController : Controller
     [HttpPost]
     public ActionResult Excluir(ExcluirAmigoViewModel excluirVm)
     {
+        bool amigoComEmprestimos = repositorioEmprestimo
+            .SelecionarTodos()
+            .Any(e => e.Amigo.Id == excluirVm.Id);
+
+        if (amigoComEmprestimos)
+        {
+            ModelState.AddModelError(string.Empty,
+                "Não é possível excluir este amigo porque há empréstimos vinculados.");
+            return View(excluirVm);
+        }
+
         repositorioAmigo.Excluir(excluirVm.Id);
 
         return RedirectToAction(nameof(Listar));

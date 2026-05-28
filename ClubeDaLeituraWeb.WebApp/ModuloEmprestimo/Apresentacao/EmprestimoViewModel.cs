@@ -21,3 +21,11 @@ public record CadastrarEmprestimoViewModel(
     string RevistaId
 
 );
+
+public record DevolverEmprestimoViewModel(
+    string Id,
+    string Amigo,
+    string Revista,
+    DateTime Abertura,
+    DateTime ConclusaoPrevista
+);

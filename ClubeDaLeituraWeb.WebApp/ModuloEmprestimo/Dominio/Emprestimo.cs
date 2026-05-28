@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ClubeDaLeituraWeb.WebApp.Compartilhado.Dominio;
 using ClubeDaLeituraWeb.WebApp.ModuloAmigo.Dominio;
 using ClubeDaLeituraWeb.WebApp.ModuloRevista.Dominio;
@@ -8,7 +9,11 @@ public class Emprestimo : EntidadeBase<Emprestimo>
 {
     public Revista Revista { get; private set; } = null!;
     public Amigo Amigo { get; private set; } = null!;
+
+    [JsonInclude]
     public StatusEmprestimo Status { get; private set; }
+
+    [JsonInclude]
     public DateTime Abertura { get; private set; }
     public DateTime ConclusaoPrevista
     {
@@ -29,6 +34,7 @@ public class Emprestimo : EntidadeBase<Emprestimo>
         }
     }
 
+    [JsonConstructor]
     public Emprestimo(Revista revista, Amigo amigo)
     {
         Revista = revista;

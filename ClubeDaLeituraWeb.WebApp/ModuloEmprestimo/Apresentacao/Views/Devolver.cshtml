@@ -1,0 +1,35 @@
+@model DevolverEmprestimoViewModel
+
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Devolução de Empréstimo";
+}
+
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Devolver" asp-route-id="@Model.Id" method="post">
+
+    <div class="alert alert-primary border-start border-primary border-2 rounded-3" role="alert">
+        Tem certeza que deseja registrar a devolução deste empréstimo?
+    </div>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">ID</dt>
+        <dd class="col-sm-8">@Model.Id</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Amigo</dt>
+        <dd class="col-sm-8">@Model.Amigo</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Revista</dt>
+        <dd class="col-sm-8">@Model.Revista</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Data de Empréstimo</dt>
+        <dd class="col-sm-8">@Model.Abertura</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Data de Devolução</dt>
+        <dd class="col-sm-8">@Model.ConclusaoPrevista</dd>
+    </dl>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
+    </div>
+</form>

@@ -33,7 +33,7 @@ public sealed class ContextoJson
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            ReferenceHandler = ReferenceHandler.Preserve
+            // ReferenceHandler = ReferenceHandler.Preserve
         };
 
         string jsonString = JsonSerializer.Serialize(this, opcoesJson);
@@ -50,7 +50,7 @@ public sealed class ContextoJson
 
         JsonSerializerOptions opcoesJson = new JsonSerializerOptions();
         opcoesJson.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        opcoesJson.ReferenceHandler = ReferenceHandler.Preserve;
+        // opcoesJson.ReferenceHandler = ReferenceHandler.Preserve;
 
         ContextoJson? contextoSalvo = JsonSerializer
             .Deserialize<ContextoJson>(jsonString, opcoesJson);

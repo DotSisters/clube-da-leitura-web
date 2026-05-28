@@ -129,6 +129,40 @@ public class EmprestimoController : Controller
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public ActionResult Devolver(string id)
+    {
+        Emprestimo? emprestimo = repositorioEmprestimo.SelecionarPorId(id);
+
+        if (emprestimo == null)
+            return RedirectToAction(nameof(Listar));
+
+        DevolverEmprestimoViewModel devolverVm = new DevolverEmprestimoViewModel(
+            emprestimo.Id,
+            emprestimo.Amigo.Nome,
+            emprestimo.Revista.Titulo,
+            emprestimo.Abertura,
+            emprestimo.ConclusaoPrevista
+        );
+
+        return View(devolverVm);
+    }
+
+    [HttpPost]
+    public ActionResult Devolver(DevolverEmprestimoViewModel devolverVm)
+    {
+        Emprestimo? emprestimo = repositorioEmprestimo.SelecionarPorId(devolverVm.Id);
+
+        if (emprestimo == null)
+            return RedirectToAction(nameof(Listar));
+
+        emprestimo.Concluir();
+
+        repositorioEmprestimo.Editar(emprestimo.Id, emprestimo);
+        repositorioRevista.Editar(emprestimo.Revista.Id, emprestimo.Revista);
+
+        return RedirectToAction(nameof(Listar));
+    }
 
     private void CarregarAmigos()
     {
