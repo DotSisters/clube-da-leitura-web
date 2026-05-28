@@ -1,109 +1,86 @@
-# Clube da Leitura
+# 📚 Clube da Leitura
 
-Gustavo tem uma coleção grande de revistas em quadrinhos. Por isso, resolveu
-emprestar para os amigos. Assim foi criado o Clube da Leitura.
+![](./.docs/clubeleituraweb.gif)
 
-Mas para não perder nenhuma revista, seu pai contratou os alunos da Academia do
-Programador para fazer uma aplicação que cadastra as revistas e controla os
-empréstimos.
+## 1. Introdução
+O *Clube da Leitura* é uma aplicação desenvolvida para organizar e controlar o empréstimo de revistas em quadrinhos.  
+Gustavo, dono de uma grande coleção, decidiu compartilhar suas revistas com amigos. Para evitar perdas e manter o controle, foi criada esta aplicação que gerencia *caixas, revistas, amigos e empréstimos*.
 
-## 1. Módulo de Caixas
+O sistema foi desenvolvido em *.NET 10.0 SDK*, com foco em simplicidade e eficiência.
 
-**Requisitos Funcionais:**
+---
 
-- O sistema deve permitir cadastrar novas caixas
-- O sistema deve permitir editar caixas existentes
-- O sistema deve permitir excluir caixas
-- O sistema deve permitir visualizar todas as caixas
+## 2. Funcionalidades
 
-**Regras de Negócio:**
+### 🔹 Módulo de Caixas
+- Cadastrar novas caixas
+- Editar caixas existentes
+- Excluir caixas (se não houver revistas vinculadas)
+- Visualizar todas as caixas
 
-- Campos obrigatórios:
-- Etiqueta (texto único, máximo 50 caracteres)
-- Cor (seleção de paleta ou hexadecimal)
-- Dias de empréstimo (número, padrão 7)
-- Não pode haver etiquetas duplicadas
-- Não permitir excluir uma caixa caso tenha revistas vinculadas
-- Cada caixa define o prazo máximo para empréstimo de suas revistas
+*Regras de negócio:*
+- Etiqueta única (máx. 50 caracteres)
+- Cor obrigatória (paleta ou hexadecimal)
+- Dias de empréstimo (padrão: 7)
+- Não permitir etiquetas duplicadas
+- Cada caixa define prazo máximo de empréstimo
 
-## 2. Módulo de Revistas
+---
 
-**Requisitos Funcionais:**
+### 🔹 Módulo de Revistas
+- Cadastrar novas revistas
+- Editar revistas existentes
+- Excluir revistas
+- Visualizar todas as revistas
 
-- O sistema deve permitir cadastrar novas revistas
-- O sistema deve permitir editar revistas existentes
-- O sistema deve permitir excluir revistas
-- O sistema deve permitir visualizar todas as revistas
+*Regras de negócio:*
+- Título (2–100 caracteres)
+- Número da edição (positivo)
+- Ano de publicação válido
+- Caixa obrigatória
+- Não permitir duplicidade de título + edição
 
-**Regras de Negócio:**
+---
 
-- Campos obrigatórios:
-    - Título (2-100 caracteres)
-    - Número da edição (número positivo)
-    - Ano de publicação (data válida)
-    - Caixa (seleção obrigatória)
-- Não pode haver revistas com mesmo título e edição
+### 🔹 Módulo de Amigos
+- Inserir novos amigos
+- Editar amigos cadastrados
+- Excluir amigos (se não houver empréstimos vinculados)
+- Visualizar lista de amigos
 
-## 3. Módulo de Amigos
+*Regras de negócio:*
+- Nome (3–100 caracteres)
+- Nome do responsável (3–100 caracteres)
+- Telefone válido (10–11 dígitos)
+- Não permitir duplicidade de nome + telefone
 
-**Requisitos Funcionais**
+---
 
-- O sistema deve permitir a inserção de novos amigos
-- O sistema deve permitir a edição de amigos já cadastrados
-- O sistema deve permitir excluir amigos já cadastrados
-- O sistema deve permitir visualizar amigos cadastrados
+### 🔹 Módulo de Empréstimos
+- Registrar novos empréstimos
+- Registrar devoluções
+- Visualizar empréstimos abertos e concluídos
 
-**Regras de Negócio:**
+*Regras de negócio:*
+- Campos obrigatórios: Amigo, Revista disponível, Data de empréstimo (automática), Data de devolução (calculada conforme caixa)
+- Status: Aberto / Concluído / Atrasado
+- Cada amigo só pode ter um empréstimo ativo
+- Empréstimos atrasados destacados visualmente
+- Data de devolução = Data empréstimo + dias da caixa
 
-- Campos obrigatórios:
-    - Nome (mínimo 3 caracteres, máximo 100)
-    - Nome do responsável (mínimo 3 caracteres, máximo 100)
-    - Telefone (formato validado: 10-11 dígitos)
-    - Não pode haver amigos com o mesmo nome e telefone
+---
 
-## 4. Módulo de Empréstimos
-
-**Requisitos Funcionais:**
-
-- O sistema deve permitir registrar novos empréstimos
-- O sistema deve permitir registrar devoluções
-- O sistema deve permitir visualizar empréstimos abertos e fechados
-
-**Refatorações:**
-
-**Revistas:**
-
-- O sistema deve armazenar e mostrar o status atual das revistas cadastradas (disponível/emprestada/reservada)
-
-**Amigos:**
-
-- O sistema deve permitir visualizar os empréstimos de amigos específicos
-- Não permitir excluir um amigo caso tenha empréstimos vinculados
-  Regras de Negócio:
-- Campos obrigatórios:
-    - Amigo
-    - Revista (disponível no momento)
-    - Data empréstimo (automática)
-    - Data devolução (calculada conforme caixa)
-- Status possíveis: Aberto / Concluído / Atrasado
-- Cada amigo só pode ter um empréstimo ativo por vez
-- Empréstimos atrasados devem ser destacados visualmente
-- A data de devolução é calculada automaticamente (data empréstimo + dias da
-  caixa)
-
-## Como utilizar
+## 3. Como utilizar
 
 1. Clone o repositório ou baixe o código fonte.
-2. Abra o terminal ou o prompt de comando e navegue até a pasta raiz
-3. Utilize o comando abaixo para restaurar as dependências do projeto.
-
-    ```bash
-    dotnet restore
-    ```
+2. Abra o terminal e navegue até a pasta raiz.
+3. Restaure as dependências:
+   bash
+   dotnet restore
 
 4. Para executar o projeto compilando em tempo real
 
-    ```bash
+    bash
     dotnet run --project ClubeDaLeituraWeb.WebApp
     ```
 
